@@ -154,7 +154,7 @@ $APT install $ZUSAETZLICHEPAKETE -y
 
 
 ######
-# install my ESTICbackupscript 
+# install my restic-backupscript 
 set_restic
 $WGET https://github.com/rakor/resticbackupscript/archive/master.zip
 $UNZIP master.zip
