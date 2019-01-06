@@ -156,6 +156,7 @@ if [ `systemd-detect-virt` = "kvm" ] || [ `systemd-detect-virt` = "qemu" ]; then
     if [ dmesg | grep -q -i qxl ]; then
         echo "You use qxl for your video. We'll install spice-vdagent"
         ZUSAETZLICHEPAKETE="$ZUSAETZLICHEPAKETE spice-vdagent"
+    fi
 elif [ `systemd-detect-virt` = "none" ]; then
     echo "Not running in KVM"
 fi
