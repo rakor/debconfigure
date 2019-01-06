@@ -153,7 +153,7 @@ fi
 # older systemd-versions (in strecht) detect kvm as qemu
 if [ `systemd-detect-virt` = "kvm" ] || [ `systemd-detect-virt` = "qemu" ]; then
     echo "You are running in a virtual environment"
-    if [ dmesg | grep -q -i qxl ]; then
+    if dmesg | grep -q -i qxl ; then
         echo "You use qxl for your video. We'll install spice-vdagent"
         ZUSAETZLICHEPAKETE="$ZUSAETZLICHEPAKETE spice-vdagent"
     fi
