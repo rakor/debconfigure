@@ -7,7 +7,7 @@
 #######################
 
 # Default programs to install
-PAKETE="vim intel-microcode ufw git fish wget aptitude curl bzip2"
+PAKETE="vim apt-transport-https ufw git fish wget aptitude curl bzip2"
 
 
 # Programpaths
