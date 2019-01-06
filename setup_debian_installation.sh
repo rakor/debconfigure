@@ -6,9 +6,6 @@
 #
 #######################
 
-#My Username
-USER=test
-
 # Default programs to install
 PAKETE="vim intel-microcode ufw git fish wget aptitude curl bzip2"
 
@@ -31,7 +28,7 @@ BZIP=/bin/bzip2
 # Where is restic located?
 set_restic()
 {
-    # Defaultpath is nothing is found
+    # Defaultpath if nothing is found
     DEF_RESTIC_PATH=/usr/local/bin/restic
 	RESTIC=`$WHICH restic`
 	if [ -z $RESTIC ]; then
@@ -43,12 +40,35 @@ set_restic()
 }
 
 
-#+ check for root
-#
+####
+# check for root
 if [ `id -u` -ne 0 ]; then
 	echo "This script must be run as root."
 	exit 1
 fi
+
+####
+# Ask for username
+USERSET=N
+while [ ! $USERSET = "Y" ]; do
+    read -p "Please enter the username of your defaultuser: " USER
+    while true; do
+        read -p "Do you want to use username \"${USER}\" (y/n) " yn
+        case $yn in 
+            [Yy]* ) USERSET=Y;
+                    if ! grep -q "^${USER}:" /etc/passwd ; then
+                        echo "The username was not found in /etc/passwd."
+                        USERSET=N
+                    fi
+                    break;;
+            [nN]* ) USERSET=N; break;;
+            * ) echo "Please anser y or n ";;
+        esac
+    done
+done
+echo "Username \"${USER}\" will be used as default username."
+
+
 
 
 ####
@@ -88,6 +108,8 @@ done
 
 ######
 # Install default packages
+# don't install anything from cd.
+sed -i_old -e "s/^\s*deb\s*cdrom/#deb cdrom/" /etc/apt/sources.list
 $APT update
 $APT install $PAKETE -y
 #now curl, wget, unzip eg are available
@@ -184,6 +206,22 @@ $WGET https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim
 # configure the shell of root
 /bin/mv /root/.bashrc /root/.bashrc_old
 $WGET https://raw.githubusercontent.com/rakor/config/master/root/.bashrc -O /root/.bashrc
+
+
+####
+# Ask for microcode
+while true; do
+    echo "\n######  YOUR /etc/apt/sources.list  ######"
+    /bin/cat /etc/apt/sources.list
+    echo "##########################################\n"
+    echo "You need to have \"non-free\" and \"contrib\" activated in sources.list to install the microcode"
+    read -p "Do you want to install intel-microcode (y/n) " yn
+    case $yn in 
+        [Yy] ) $APT install intel-microcode; break;;
+        [Nn] ) break;;
+        * ) echo "Please anser y or n" ;;
+    esac
+done
 
 
 ####
