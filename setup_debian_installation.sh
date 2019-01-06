@@ -144,7 +144,7 @@ if [ $SYNCTHING = "U" ]; then
     echo "Upstream Repository for Syncthing will ne added" # from https://apt.syncthing.net/ übernommen
     $CURL -s https://syncthing.net/release-key.txt | /usr/bin/apt-key add -
     echo "deb https://apt.syncthing.net/ syncthing stable" | /usr/bin/tee /etc/apt/sources.list.d/syncthing.list
-    PAKETE="$PAKETE syncthing"
+    ZUSAETZLICHEPAKETE="$ZUSAETZLICHEPAKETE syncthing"
 fi
 
 ####
